@@ -6,7 +6,7 @@ WORKDIR /react-app
 
 COPY package*.json ./
 
-RUN npm install -g npm@"V"
+RUN npm install 
 
 COPY . .
 
