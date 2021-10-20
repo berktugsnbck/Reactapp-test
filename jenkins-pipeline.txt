@@ -1,0 +1,39 @@
+#!/usr/bin/env groovy
+
+node {
+    stage("Git Clone"){
+    git credentialsId: 'GIT_HUB_CREDENTIALS',url:'https://github.com/berktugsnbck/test.git'
+    }
+
+    stage("Kubernetes DEV Deployment"){
+
+        script {
+            env.DOCKER_BUILD_NUMBER=Jenkins.instance.getItem("autobuild-react").lastSuccessfulBuild.number
+        }
+
+        sh 'envsubst < ./test/Kubernetes/dev/deployment.yaml | kubectl apply -f -'
+        sh 'kubectl apply -f ./test/Kubernetes/dev/service.yaml'
+
+      }
+
+
+    stage("TEST Deployment"){
+
+    def deployment = input(message:'Deploy to TEST ?',ok:'ok',parameters:[booleanParam(defaultValue:true,description:'',name:'Yes')])
+
+    if(deployment == true){
+
+    script {
+        env.DOCKER_BUILD_NUMBER=Jenkins.instance.getItem("autobuild-react").lastSuccessfulBuild.number
+    }
+
+        sh 'envsubst < ./test/Kubernetes/test/deployment.yaml | kubectl apply -f -'
+        sh 'kubectl apply -f ./test/Kubernetes/test/service.yaml'
+      }
+      else{
+          echo "TEST Deployment Aborted!"
+      }
+    }
+
+
+}
