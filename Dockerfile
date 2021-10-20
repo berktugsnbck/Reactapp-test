@@ -6,7 +6,7 @@ WORKDIR /react-app
 
 COPY package*.json ./
 
-RUN npm ci install
+RUN npm install
 
 COPY . .
 
