@@ -1,0 +1,2 @@
+docker build --network=host -t react-app:v$DOCKER_BUILD_NUMBER .
+docker run -d -p 3000:3000 react-app:v

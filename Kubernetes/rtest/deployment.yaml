@@ -2,9 +2,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: to-do-app
+  name: todoapp-test-deployment
+  namespace: rtest
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: to-do-app
@@ -20,6 +21,7 @@ spec:
     spec:
       containers:
       - name: to-do-app
-        image: berktugsnbck/testingrepo:latest
+        image: berktugsnbck/react-app:v$DOCKER_BUILD_NUMBER
         ports:
           - containerPort: 3000
+
