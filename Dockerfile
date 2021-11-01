@@ -6,7 +6,7 @@ WORKDIR /react-app
 
 COPY package*.json ./
 
-RUN npm install 
+RUN npm -g install npm@7.19.1
 
 COPY . .
 
